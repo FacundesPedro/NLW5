@@ -6,6 +6,7 @@ import {homeProps,Episode} from '../Models/homeProps'
 import {api} from '../utils/api' 
 import {parseISO,format} from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
+import styles from '../styles/index.module.scss'
 
 export default function Home({episodes}) {
   /*useEffect(()=>{ SPA
@@ -15,10 +16,15 @@ export default function Home({episodes}) {
   },[])*/
   console.log(episodes)
   return (
-    <>
-      <h1>Newest Podcast's:</h1>
-      <p>{JSON.stringify(episodes)}</p>
-    </>
+    <div className={styles.grid}>
+      <h1>hello grid</h1>
+     {episodes.forEach(e => (
+       <div className="grid_episode">
+         <h2>{episodes.id}</h2>
+         <p>{episodes.title}</p>
+       </div>
+     ))}
+    </div>
   )
 }
 /*
@@ -44,17 +50,17 @@ export const getStaticProps: GetStaticProps = async () =>{
     }
   })
   const data_map:Episode[] = data
-  const episodes = data_map.map(ep =>{
+  const episodes_view = data_map.map(ep =>{
     return {
       id:ep.id,
       title:ep.title,
-      member
+      members:ep.members,
     }
   })
 
   return {
     props:{
-      episodes:data,
+      episodes:episodes_view,
     },
     revalidate:60*60*8,
   }
